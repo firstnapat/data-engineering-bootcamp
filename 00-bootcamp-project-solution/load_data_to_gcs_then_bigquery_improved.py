@@ -7,16 +7,17 @@ from google.oauth2 import service_account
 DATA_FOLDER = "data"
 BUSINESS_DOMAIN = "greenery"
 LOCATION = "asia-southeast1"
-PROJECT_ID = "dataengineercafe"
-BUCKET_NAME = "deb3-bootcamp-00"
+PROJECT_ID = "data-bootcamp-skooldio"
+BUCKET_NAME = "data-bootcamp-100019"
 
 # Prepare and Load Credentials to Connect to GCP Services
-keyfile_gcs = "dataengineercafe-deb3-uploading-files-to-gcs-27c6014869cf.json"
+keyfile_gcs = "data-bootcamp-skooldio-7fc72475e769.json"
 service_account_info_gcs = json.load(open(keyfile_gcs))
 credentials_gcs = service_account.Credentials.from_service_account_info(
     service_account_info_gcs
 )
-keyfile_bigquery = "dataengineercafe-deb3-load-files-to-bigquery-61580246a511.json"
+
+keyfile_bigquery = "data-bootcamp-skooldio-7fc72475e769.json"
 service_account_info_bigquery = json.load(open(keyfile_bigquery))
 credentials_bigquery = service_account.Credentials.from_service_account_info(
     service_account_info_bigquery
@@ -52,7 +53,7 @@ def load_to_bigquery_without_partition(bigquery_client, data, destination_blob_n
         autodetect=True,
     )
 
-    table_id = f"{PROJECT_ID}.deb_bootcamp.{data}"
+    table_id = f"{PROJECT_ID}.dbi.{data}"
     job = bigquery_client.load_table_from_uri(
         f"gs://{BUCKET_NAME}/{destination_blob_name}",
         table_id,
@@ -113,7 +114,7 @@ def load_to_bigquery_with_partition(bigquery_client, data, destination_blob_name
     )
 
     partition = dt.replace("-", "")
-    table_id = f"{PROJECT_ID}.deb_bootcamp.{data}${partition}"
+    table_id = f"{PROJECT_ID}.dbi.{data}${partition}"
     job = bigquery_client.load_table_from_uri(
         f"gs://{BUCKET_NAME}/{destination_blob_name}",
         table_id,
